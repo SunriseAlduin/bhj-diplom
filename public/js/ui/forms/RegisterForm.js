@@ -14,7 +14,9 @@ class RegisterForm extends AsyncForm {
       if(response.success) {
         this.element.reset();
         App.setState('user-logged');
-        Modal.close(this.element.closest('.modal'));
+        const parent = this.element.closest('.modal');
+        const modal = new Modal(parent);
+        modal.close();
       };
     });
   }

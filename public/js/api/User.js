@@ -104,6 +104,7 @@ class User {
   static logout(callback) {
     createRequest({
       url: this.URL + '/logout',
+      data: {},
       method: 'POST',
       callback: (err, response) => {
         if(response && response.success) {
