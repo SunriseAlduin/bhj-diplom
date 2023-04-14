@@ -49,6 +49,8 @@ class Entity {
       method: 'DELETE',
       data: {...data},
     };
+
+    createRequest(options);
   };
 
   static URL = '';

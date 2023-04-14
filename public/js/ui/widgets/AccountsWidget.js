@@ -32,15 +32,15 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-    const button = document.querySelector('.create-account');
+    const button = this.element.querySelector('.create-account');
 
     button.addEventListener('click', () => {
       const modal = App.getModal('createAccount');
       modal.open();
     });
 
-    const menu = document.querySelector('.accounts-panel');
-    const accounts = menu.querySelectorAll('.account');
+    
+    const accounts = this.element.querySelectorAll('.account');
 
     accounts.forEach((account) => {
       account.addEventListener('click', () => {
@@ -63,12 +63,24 @@ class AccountsWidget {
   update() {
     if(User.current()) {
       Account.list({}, (err, response) => {
-        if(response.success) {
+        if(response && response.success !== undefined) {
+          console.log(response.data);
           this.clear();
+          /*
           response.data.forEach((item) => {
+            console.log(item)
             this.renderItem(item);
           })
-        };
+          */
+
+          for(let i = 0; i < response.data.length; i++) {
+            const item = response.data[i];
+            console.log(item)
+            this.renderItem(item);
+          };
+        }else {
+          console.log(err);
+        }
       })
     };
   }
@@ -79,7 +91,7 @@ class AccountsWidget {
    * в боковой колонке
    * */
   clear() {
-    const menu = document.querySelector('.accounts-panel');
+    const menu = this.element;
     const accounts = menu.querySelectorAll('.account');
     
     accounts.forEach((element) => {
@@ -95,7 +107,7 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-    const previousActive = document.querySelector('li.account.active');
+    const previousActive = this.element.querySelector('li.account.active');
     previousActive.classList.remove('active');
 
     element.classList.add('active');
@@ -128,8 +140,7 @@ class AccountsWidget {
    * и добавляет его внутрь элемента виджета
    * */
   renderItem(data){
-    const accountList = this.element.querySelector('.accounts-list');
     const accountHTML = this.getAccountHTML(data);
-    accountList.innerHTML += accountHTML;
-  }
+    this.element.innerHTML += accountHTML;
+}
 }
