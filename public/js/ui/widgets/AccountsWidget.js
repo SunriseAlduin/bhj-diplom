@@ -64,18 +64,9 @@ class AccountsWidget {
     if(User.current()) {
       Account.list({}, (err, response) => {
         if(response && response.success !== undefined) {
-          console.log(response.data);
           this.clear();
-          /*
-          response.data.forEach((item) => {
-            console.log(item)
-            this.renderItem(item);
-          })
-          */
-
           for(let i = 0; i < response.data.length; i++) {
             const item = response.data[i];
-            console.log(item)
             this.renderItem(item);
           };
         }else {
