@@ -22,6 +22,7 @@ class AccountsWidget {
 
     this.registerEvents();
     this.update();
+    console.log(this.element);
   }
 
   /**
@@ -32,22 +33,17 @@ class AccountsWidget {
    * вызывает AccountsWidget.onSelectAccount()
    * */
   registerEvents() {
-    const button = this.element.querySelector('.create-account');
-
-    button.addEventListener('click', () => {
-      const modal = App.getModal('createAccount');
-      modal.open();
+    this.element.addEventListener('click', (event) => {
+      if (event.target.closest('.create-account')) {
+        const modal = App.getModal('createAccount');
+        modal.open();
+      } else {
+        const account = event.target.closest('.account');
+        if (account) {
+          this.onSelectAccount(account);
+        }
+      }
     });
-
-    
-    const accounts = this.element.querySelectorAll('.account');
-
-    accounts.forEach((account) => {
-      account.addEventListener('click', () => {
-        this.onSelectAccount(account);
-      });
-    });
-
   }
 
   /**
@@ -98,15 +94,17 @@ class AccountsWidget {
    * Вызывает App.showPage( 'transactions', { account_id: id_счёта });
    * */
   onSelectAccount( element ) {
-    const previousActive = this.element.querySelector('li.account.active');
-    previousActive.classList.remove('active');
+    const previousActive = this.element.querySelectorAll('li.account.active');
+    previousActive.forEach((item) => {
+      item.classList.remove('active');
+    });
 
     element.classList.add('active');
 
     const accId = element.getAttribute('data-id');
     const id = {};
     id[User.current().id] = accId;
-
+    console.log(id)
     App.showPage('transactions', id);
   }
 
