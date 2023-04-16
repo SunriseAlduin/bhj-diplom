@@ -22,7 +22,6 @@ class AccountsWidget {
 
     this.registerEvents();
     this.update();
-    console.log(this.element);
   }
 
   /**
@@ -104,7 +103,6 @@ class AccountsWidget {
     const accId = element.getAttribute('data-id');
     const id = {};
     id[User.current().id] = accId;
-    console.log(id)
     App.showPage('transactions', id);
   }
 
